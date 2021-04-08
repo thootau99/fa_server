@@ -1,0 +1,21 @@
+# Ignore bundler config.
+server_api/.bundle
+
+# Ignore all logfiles and tempfiles.
+server_api/log/*
+server_api/tmp/*
+server_api/log/.keep
+server_api/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+server_api/tmp/pids/*
+server_api/tmp/pids/
+server_api/tmp/pids/.keep
+
+# Ignore uploaded files in development.
+server_api/storage/*
+server_api/storage/.keep
+.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+server_api/config/master.key
