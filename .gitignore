@@ -19,3 +19,4 @@ server_api/storage/.keep
 
 # Ignore master key for decrypting credentials and more.
 server_api/config/master.key
+.vscode/

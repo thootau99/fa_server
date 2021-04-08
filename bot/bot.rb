@@ -1,6 +1,6 @@
 require 'discordrb'
 
-bot = Discordrb::Bot.new token: 'ODI5MjQ3MjIxOTI4MDM0MzA1.YG1WqA.Et025YyGlo8F0KC_23th115-bfY'
+bot = Discordrb::Bot.new token: ''
 eventSave = ''
 bot.mention do |event|
   eventSave = event
