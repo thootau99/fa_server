@@ -9,8 +9,12 @@ bot.mention do |event|
   event.user.pm('You have mentioned me!')
 end
 
-bot.message(content: 'checkEvent') do |event|
-  eventSave.respond "testfromold"
+bot.message(content: 'check') do |event|
+  while true
+    eventSave.respond "ㄏ."
+    sleep 0.5
+  end
 end
 
 bot.run
+
