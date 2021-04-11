@@ -1,4 +1,6 @@
 import pyautogui as pa
+from PIL import Image
+
 def checkmp(mp):
   pixels = mp.load()
   width, height = mp.size
@@ -61,6 +63,24 @@ def getPercent(numa, numb):
   sum = numa + numb
   return int((numa / sum) * 100)
 
-  
-thisframeMp = pa.screenshot(region=(21, 44, 92, 1))
-print(checkBattle())
+def getDialogArea(dialog):
+  pixels = dialog.load()
+  width, height = dialog.size
+
+  all_pixel = {'yellow': 0, 'incorrect': 0}
+  for x in range(width):
+    for y in range(height):
+      cpixel = pixels[x, y]
+      if cpixel[0] > 200 and cpixel[1] > 100 and cpixel[2] > 75:
+        all_pixel['yellow'] = all_pixel['yellow'] + 1
+      else:
+        all_pixel['incorrect'] = all_pixel['incorrect'] + 1
+  return getPercent(all_pixel['yellow'], all_pixel['incorrect'])
+
+with Image.open("u1.jpg") as im:
+  print(getDialogArea(im))
+# thisframeMp = pa.screenshot(region=(21, 44, 92, 1))
+# print(checkBattle())
+
+# 212, 168, 95
+# 228, 216, 141

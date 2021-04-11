@@ -22,7 +22,6 @@ p = True
     # 290 187
     # 359 139
 locate = [(130, 420), (203,367), (262,312), (351,249), (425,191), (72,353),(138,311), (220, 249), (290,187), (359,139)]
-
 def checkmp(mp):
   pixels = mp.load()
   width, height = mp.size
@@ -91,7 +90,7 @@ def checkBattle():
 def main():
   global p
   global id
-  id = client.create("商")
+  id = client.create("???")
   print(id)
   while True:
     key_stroke = keyboard.read_key()
