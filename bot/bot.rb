@@ -12,7 +12,7 @@ begin
 
   botThread = Thread.new do
     Thread.pass
-    bot = Discordrb::Bot.new token: 'ODI5MjQ3MjIxOTI4MDM0MzA1.YG1WqA.CtKN4Lk-wnb70HQ0HQInu8vrOGc'
+    bot = Discordrb::Bot.new token: ''
     eventSave = ''
     bot.mention do |event|
       eventSave = event
