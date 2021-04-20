@@ -11,6 +11,7 @@ baseHPy = 32
 baseMPy = 44
 baseX = 21
 p = True
+DIALOG_LOCK = False
     # 130 420
     # 203 367
     # 262 312
@@ -71,6 +72,23 @@ def checkBattleFrame(battle):
   sum = all_pixel['correct'] + all_pixel['incorrect']
   return int((all_pixel['correct'] / sum) * 100)
 
+def getDialogArea(dialog):
+  pixels = dialog.load()
+  width, height = dialog.size
+
+  all_pixel = {'yellow': 0, 'incorrect': 0}
+  for x in range(width):
+    for y in range(height):
+      cpixel = pixels[x, y]
+      if cpixel[0] > 200 and cpixel[1] > 100 and cpixel[2] > 75:
+        if cpixel[1] > 200 and cpixel[2] > 200:
+          all_pixel['incorrect'] = all_pixel['incorrect'] + 1
+        else:
+          all_pixel['yellow'] = all_pixel['yellow'] + 1
+      else:
+        all_pixel['incorrect'] = all_pixel['incorrect'] + 1
+  return getPercent(all_pixel['yellow'], all_pixel['incorrect'])
+
 
 def getPercent(numa, numb):
   if numa == 0 or numb == 0:
@@ -83,10 +101,8 @@ def checkBattle():
   battleCondition = checkBattleFrame(battle)
   if battleCondition > 80:
     return False
-    print('inbattle: {inbattle}'.format(inbattle=inbattle))
   else:
     return True
-    print('inbattle: {inbattle}'.format(inbattle=inbattle))
 
 def main():
   global p
@@ -110,6 +126,7 @@ t = threading.Thread(target=main)
 
 t.start()
 
+
 def whenexit():
   global id
   client.quit(id)
@@ -118,6 +135,70 @@ atexit.register(whenexit)
 
 
 while True:
+  if DIALOG_LOCK:
+    if client.getDialog() != False:
+      action = client.getAction()
+      if action:
+        if not action['perform']:
+          num = action['action']
+          if num == 1:
+            pa.moveTo(384, 310)
+            pa.moveTo(384, 310)
+            pa.mouseDown()
+            pa.mouseUp()
+            time.sleep(0.5)
+            pa.moveTo(384, 310)
+            pa.moveTo(384, 310)
+            pa.mouseDown()
+            pa.mouseUp()
+          elif num == 2:
+            pa.moveTo(384, 341)
+            pa.moveTo(384, 341)
+            pa.mouseDown()
+            pa.mouseUp()
+            time.sleep(0.5)
+            pa.moveTo(384, 310)
+            pa.moveTo(384, 310)
+            pa.mouseDown()
+            pa.mouseUp()
+          elif num == 3:
+            pa.moveTo(384, 367)
+            pa.moveTo(384, 367)
+            pa.mouseDown()
+            pa.mouseUp()
+            time.sleep(0.5)
+            pa.moveTo(384, 310)
+            pa.moveTo(384, 310)
+            pa.mouseDown()
+            pa.mouseUp()
+          elif num == 4:
+            pa.moveTo(384, 400)
+            pa.moveTo(384, 400)
+            pa.mouseDown()
+            pa.mouseUp()
+            time.sleep(0.5)
+            pa.moveTo(384, 310)
+            pa.moveTo(384, 310)
+            pa.mouseDown()
+            pa.mouseUp()
+          
+          dialog = pa.screenshot(region=(241, 122, 302, 292))
+          dialogsim = getDialogArea(dialog)
+          if dialogsim > 50:
+            dialog.save('dialog.png')
+            client.dialoging('dialog.png')
+            continue
+          else:
+            client.offDialog()
+            client.offAction()
+      #384 310 1
+      #384 341 2
+      #384 367 3
+      #384 400 4
+      continue
+    elif client.getDialog == False:
+      DIALOG_LOCK = False
+
   battle = checkBattle()
 
   mpNotEnough = []
@@ -140,6 +221,14 @@ while True:
         pa.keyDown('f6')
         pa.keyUp('f6')
   elif not battle:
+    dialog = pa.screenshot(region=(241, 122, 302, 292))
+    dialogsim = getDialogArea(dialog)
+    if dialogsim > 50:
+      DIALOG_LOCK = True
+      dialog.save('dialog.png')
+      client.dialoging('dialog.png')
+    
+    
     thisframeMp = pa.screenshot(region=(baseX, baseMPy, 92, 1))
     thisframeHp = pa.screenshot(region=(baseX, baseHPy, 92, 1)) # +19
     otherInterfaces = client.all()

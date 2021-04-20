@@ -1,6 +1,9 @@
 import requests
 import json
 import time
+import os
+import base64, io
+from PIL import Image
 SERVERURI = 'http://192.168.76.16'
 PORT = ':3000'
 
@@ -60,3 +63,51 @@ def play(id):
     else:
         return False
         
+def getDialog():
+    URI = '{server}{port}/api/v1/dialog/get'.format(server=SERVERURI, port=PORT, id=id)
+
+    response = requests.get(URI)
+    if response.status_code == 200:
+        dialogStatus = json.loads(response.text)['lock']
+        return dialogStatus
+
+
+def offDialog():
+    URI = '{server}{port}/api/v1/dialog/off'.format(server=SERVERURI, port=PORT, id=id)
+    response = requests.get(URI)
+
+def dialoging(screen):
+    def tobase64(img):
+	    return base64.b64encode(img).decode('ascii')
+    headers = {'Content-type': 'text/xml'}
+
+    URI = '{server}{port}/api/v1/dialog/create'.format(server=SERVERURI, port=PORT, id=id)
+    im = Image.open(screen)
+    imgByteArr = io.BytesIO()
+    im.save(imgByteArr, format="PNG")
+    encode = tobase64(imgByteArr.getvalue())
+    files = {
+        'dialog_checker[image]': encode
+    }
+    response = requests.post(URI, files=files, headers=headers)
+    if response.status_code == 200:
+        return True
+    else:
+        return False
+
+def getAction():
+    URI = '{server}{port}/api/v1/action/get'.format(server=SERVERURI, port=PORT)
+    response = requests.get(URI)
+    if response.status_code == 200:
+        action = json.loads(response.text)
+        return action
+    else:
+        return False
+
+def offAction():
+    URI = '{server}{port}/api/v1/action/off'.format(server=SERVERURI, port=PORT)
+    response = requests.get(URI)
+    if response.status_code == 200:
+        return True
+    else:
+        return False

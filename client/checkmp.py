@@ -77,10 +77,25 @@ def getDialogArea(dialog):
         all_pixel['incorrect'] = all_pixel['incorrect'] + 1
   return getPercent(all_pixel['yellow'], all_pixel['incorrect'])
 
-with Image.open("u1.jpg") as im:
-  print(getDialogArea(im))
-# thisframeMp = pa.screenshot(region=(21, 44, 92, 1))
-# print(checkBattle())
+def getPetArea(dialog):
+  pixels = dialog.load()
+  width, height = dialog.size
 
-# 212, 168, 95
-# 228, 216, 141
+  all_pixel = {'correct': 0, 'incorrect': 0}
+  for x in range(width):
+    for y in range(height):
+      cpixel = pixels[x, y]
+      if cpixel[0] > 220 and cpixel[1] > 147 and cpixel[2] > 55:
+        all_pixel['correct'] = all_pixel['correct'] + 1
+      else:
+        all_pixel['incorrect'] = all_pixel['incorrect'] + 1
+  return getPercent(all_pixel['correct'], all_pixel['incorrect'])
+
+
+thisframeMp = pa.screenshot(region=(763, 25, 37, 342))
+print(getPetArea(thisframeMp))
+
+#763 25
+#800 367
+
+#F0A747 => 240 167 75
